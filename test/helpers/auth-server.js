@@ -2,10 +2,10 @@ var path = require('path')
 var rimraf = require('rimraf')
 var Server, initDb
 try {
-  Server = require('dat-registry-api/server')
-  initDb = require('dat-registry-api/server/database/init')
+  Server = require('dwebx-registry-api/server')
+  initDb = require('dwebx-registry-api/server/database/init')
 } catch (e) {
-  console.log('Disabling auth tests, run `npm install dat-registry-api` to enable them.')
+  console.log('Disabling auth tests, run `npm install dwebx-registry-api` to enable them.')
 }
 
 module.exports = createServer

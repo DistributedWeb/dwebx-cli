@@ -5,13 +5,13 @@ var tempDir = require('temporary-directory')
 var spawn = require('./helpers/spawn.js')
 var help = require('./helpers')
 
-var dat = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
+var dwebx = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
 
 test('clone - default opts', function (t) {
   help.shareFixtures(function (_, shareDat) {
     var key = shareDat.key.toString('hex')
     tempDir(function (_, dir, cleanup) {
-      var cmd = dat + ' clone ' + key
+      var cmd = dwebx + ' clone ' + key
       var st = spawn(t, cmd, { cwd: dir })
       var datDir = path.join(dir, key)
 
@@ -30,8 +30,8 @@ test('clone - default opts', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1
@@ -55,12 +55,12 @@ test('clone - default opts', function (t) {
 // Right now we aren't forcing this
 // test('clone - errors on existing dir', function (t) {
 //   tempDir(function (_, dir, cleanup) {
-//     // make empty dat in directory
-//     Dat(dir, function (err, shareDat) {
+//     // make empty dwebx in directory
+//     DWebX(dir, function (err, shareDat) {
 //       t.error(err, 'no error')
 //       // Try to clone to same dir
 //       shareDat.close(function () {
-//         var cmd = dat + ' clone ' + shareDat.key.toString('hex') + ' ' + dir
+//         var cmd = dwebx + ' clone ' + shareDat.key.toString('hex') + ' ' + dir
 //         var st = spawn(t, cmd)
 //         st.stdout.empty()
 //         st.stderr.match(function (output) {
@@ -79,7 +79,7 @@ test('clone - specify dir', function (t) {
     tempDir(function (_, dir, cleanup) {
       var key = shareDat.key.toString('hex')
       var customDir = 'my_dir'
-      var cmd = dat + ' clone ' + key + ' ' + customDir
+      var cmd = dwebx + ' clone ' + key + ' ' + customDir
       var st = spawn(t, cmd, { cwd: dir })
       st.stdout.match(function (output) {
         var downloadFinished = output.indexOf('Exiting') > -1
@@ -99,11 +99,11 @@ test('clone - specify dir', function (t) {
   })
 })
 
-test('clone - dat:// link', function (t) {
+test('clone - dwebx:// link', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
-      var key = 'dat://' + shareDat.key.toString('hex') + '/'
-      var cmd = dat + ' clone ' + key + ' '
+      var key = 'dwebx://' + shareDat.key.toString('hex') + '/'
+      var cmd = dwebx + ' clone ' + key + ' '
       var downloadDir = path.join(dir, shareDat.key.toString('hex'))
       var st = spawn(t, cmd, { cwd: dir })
       st.stdout.match(function (output) {
@@ -124,11 +124,11 @@ test('clone - dat:// link', function (t) {
   })
 })
 
-test('clone - datproject.org/key link', function (t) {
+test('clone - dwebx.org/key link', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
-      var key = 'datproject.org/' + shareDat.key.toString('hex') + '/'
-      var cmd = dat + ' clone ' + key + ' '
+      var key = 'dwebx.org/' + shareDat.key.toString('hex') + '/'
+      var cmd = dwebx + ' clone ' + key + ' '
       var downloadDir = path.join(dir, shareDat.key.toString('hex'))
       var st = spawn(t, cmd, { cwd: dir })
       st.stdout.match(function (output) {
@@ -151,11 +151,11 @@ test('clone - datproject.org/key link', function (t) {
 
 // TODO: fix --temp for clones
 // test('clone - with --temp', function (t) {
-//   // cmd: dat clone <link>
+//   // cmd: dwebx clone <link>
 //   help.shareFixtures(function (_, fixturesDat) {
 //     shareDat = fixturesDat
 //     var key = shareDat.key.toString('hex')
-//     var cmd = dat + ' clone ' + key + ' --temp'
+//     var cmd = dwebx + ' clone ' + key + ' --temp'
 //     var st = spawn(t, cmd, {cwd: baseTestDir})
 //     var datDir = path.join(baseTestDir, key)
 //     st.stdout.match(function (output) {
@@ -167,7 +167,7 @@ test('clone - datproject.org/key link', function (t) {
 //       var bytesRe = new RegExp(/1\.\d{1,2} kB/)
 
 //       t.ok(help.matchLink(output), 'prints link')
-//       t.ok(output.indexOf('dat-download-folder/' + key) > -1, 'prints dir')
+//       t.ok(output.indexOf('dwebx-download-folder/' + key) > -1, 'prints dir')
 //       t.ok(output.match(fileRe), 'total size: files okay')
 //       t.ok(output.match(bytesRe), 'total size: bytes okay')
 //       t.ok(help.isDir(datDir), 'creates download directory')
@@ -175,8 +175,8 @@ test('clone - datproject.org/key link', function (t) {
 //       var fileList = help.fileList(datDir).join(' ')
 //       var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
 //       t.ok(hasCsvFile, 'csv file downloaded')
-//       var hasDatFolder = fileList.indexOf('.dat') > -1
-//       t.ok(!hasDatFolder, '.dat folder not created')
+//       var hasDatFolder = fileList.indexOf('.dwebx') > -1
+//       t.ok(!hasDatFolder, '.dwebx folder not created')
 //       var hasSubDir = fileList.indexOf('folder') > -1
 //       t.ok(hasSubDir, 'folder created')
 //       var hasNestedDir = fileList.indexOf('nested') > -1
@@ -195,7 +195,7 @@ test('clone - datproject.org/key link', function (t) {
 
 test('clone - invalid link', function (t) {
   var key = 'best-key-ever'
-  var cmd = dat + ' clone ' + key
+  var cmd = dwebx + ' clone ' + key
   tempDir(function (_, dir, cleanup) {
     var st = spawn(t, cmd, { cwd: dir })
     var datDir = path.join(dir, key)
@@ -216,7 +216,7 @@ test('clone - shortcut/stateless clone', function (t) {
     var key = shareDat.key.toString('hex')
     tempDir(function (_, dir, cleanup) {
       var datDir = path.join(dir, key)
-      var cmd = dat + ' ' + key + ' ' + datDir + ' --exit'
+      var cmd = dwebx + ' ' + key + ' ' + datDir + ' --exit'
       var st = spawn(t, cmd)
 
       st.stdout.match(function (output) {
@@ -228,8 +228,8 @@ test('clone - shortcut/stateless clone', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1
@@ -251,14 +251,14 @@ test('clone - shortcut/stateless clone', function (t) {
 })
 
 // TODO: fix this
-// test('clone - hypercore link', function (t) {
+// test('clone - ddatabase link', function (t) {
 //   help.shareFeed(function (_, key, close) {
 //     tempDir(function (_, dir, cleanup) {
-//       var cmd = dat + ' clone ' + key
+//       var cmd = dwebx + ' clone ' + key
 //       var st = spawn(t, cmd, {cwd: dir})
 //       var datDir = path.join(dir, key)
 //       st.stderr.match(function (output) {
-//         var error = output.indexOf('not a Dat Archive') > -1
+//         var error = output.indexOf('not a DWebX Archive') > -1
 //         if (!error) return false
 //         t.ok(error, 'has error')
 //         t.ok(!help.isDir(datDir), 'download dir removed')
@@ -273,13 +273,13 @@ test('clone - shortcut/stateless clone', function (t) {
 //   })
 // })
 
-test('clone - specify directory containing dat.json', function (t) {
+test('clone - specify directory containing dwebx.json', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
-      fs.writeFileSync(path.join(dir, 'dat.json'), JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
+      fs.writeFileSync(path.join(dir, 'dwebx.json'), JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
 
-      // dat clone /dir
-      var cmd = dat + ' clone ' + dir
+      // dwebx clone /dir
+      var cmd = dwebx + ' clone ' + dir
       var st = spawn(t, cmd)
       var datDir = dir
 
@@ -290,8 +290,8 @@ test('clone - specify directory containing dat.json', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1
@@ -312,13 +312,13 @@ test('clone - specify directory containing dat.json', function (t) {
   })
 })
 
-test('clone - specify directory containing dat.json with cwd', function (t) {
+test('clone - specify directory containing dwebx.json with cwd', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
-      fs.writeFileSync(path.join(dir, 'dat.json'), JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
+      fs.writeFileSync(path.join(dir, 'dwebx.json'), JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
 
-      // cd dir && dat clone /dir/dat.json
-      var cmd = dat + ' clone ' + dir
+      // cd dir && dwebx clone /dir/dwebx.json
+      var cmd = dwebx + ' clone ' + dir
       var st = spawn(t, cmd, { cwd: dir })
       var datDir = dir
 
@@ -329,8 +329,8 @@ test('clone - specify directory containing dat.json with cwd', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1
@@ -351,14 +351,14 @@ test('clone - specify directory containing dat.json with cwd', function (t) {
   })
 })
 
-test('clone - specify dat.json path', function (t) {
+test('clone - specify dwebx.json path', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
-      var datJsonPath = path.join(dir, 'dat.json')
+      var datJsonPath = path.join(dir, 'dwebx.json')
       fs.writeFileSync(datJsonPath, JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
 
-      // dat clone /dir/dat.json
-      var cmd = dat + ' clone ' + datJsonPath
+      // dwebx clone /dir/dwebx.json
+      var cmd = dwebx + ' clone ' + datJsonPath
       var st = spawn(t, cmd)
       var datDir = dir
 
@@ -369,8 +369,8 @@ test('clone - specify dat.json path', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1
@@ -391,14 +391,14 @@ test('clone - specify dat.json path', function (t) {
   })
 })
 
-test('clone - specify dat.json path with cwd', function (t) {
+test('clone - specify dwebx.json path with cwd', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
-      var datJsonPath = path.join(dir, 'dat.json')
+      var datJsonPath = path.join(dir, 'dwebx.json')
       fs.writeFileSync(datJsonPath, JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
 
-      // cd /dir && dat clone /dir/dat.json
-      var cmd = dat + ' clone ' + datJsonPath
+      // cd /dir && dwebx clone /dir/dwebx.json
+      var cmd = dwebx + ' clone ' + datJsonPath
       var st = spawn(t, cmd, { cwd: dir })
       var datDir = dir
 
@@ -409,8 +409,8 @@ test('clone - specify dat.json path with cwd', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1
@@ -431,17 +431,17 @@ test('clone - specify dat.json path with cwd', function (t) {
   })
 })
 
-test('clone - specify dat.json + directory', function (t) {
+test('clone - specify dwebx.json + directory', function (t) {
   help.shareFixtures(function (_, shareDat) {
     tempDir(function (_, dir, cleanup) {
       var datDir = path.join(dir, 'clone-dest')
-      var datJsonPath = path.join(dir, 'dat.json') // make dat.json in different dir
+      var datJsonPath = path.join(dir, 'dwebx.json') // make dwebx.json in different dir
 
       fs.mkdirSync(datDir)
       fs.writeFileSync(datJsonPath, JSON.stringify({ url: shareDat.key.toString('hex') }), 'utf8')
 
-      // dat clone /dir/dat.json /dir/clone-dest
-      var cmd = dat + ' clone ' + datJsonPath + ' ' + datDir
+      // dwebx clone /dir/dwebx.json /dir/clone-dest
+      var cmd = dwebx + ' clone ' + datJsonPath + ' ' + datDir
       var st = spawn(t, cmd)
 
       st.stdout.match(function (output) {
@@ -451,8 +451,8 @@ test('clone - specify dat.json + directory', function (t) {
         var fileList = help.fileList(datDir).join(' ')
         var hasCsvFile = fileList.indexOf('all_hour.csv') > -1
         t.ok(hasCsvFile, 'csv file downloaded')
-        var hasDatFolder = fileList.indexOf('.dat') > -1
-        t.ok(hasDatFolder, '.dat folder created')
+        var hasDatFolder = fileList.indexOf('.dwebx') > -1
+        t.ok(hasDatFolder, '.dwebx folder created')
         var hasSubDir = fileList.indexOf('folder') > -1
         t.ok(hasSubDir, 'folder created')
         var hasNestedDir = fileList.indexOf('nested') > -1

@@ -2,14 +2,14 @@ var bytes = require('bytes').parse
 var speed = require('speedometer')
 var throttle = require('throttle')
 var pump = require('pump')
-var debug = require('debug')('dat')
+var debug = require('debug')('dwebx')
 var xtend = Object.assign
 
 module.exports = trackNetwork
 
 function trackNetwork (state, bus) {
-  if (state.dat) return track()
-  bus.once('dat', track)
+  if (state.dwebx) return track()
+  bus.once('dwebx', track)
 
   function track () {
     var opts = state.opts
@@ -23,7 +23,7 @@ function trackNetwork (state, bus) {
         }
       })
     }
-    var network = state.dat.joinNetwork(opts, function () {
+    var network = state.dwebx.joinNetwork(opts, function () {
       bus.emit('network:callback')
     })
 
@@ -40,7 +40,7 @@ function trackNetwork (state, bus) {
       }
     })
     state.network = xtend(network, state.network)
-    bus.emit('dat:network')
+    bus.emit('dwebx:network')
 
     network.on('connection', function (conn, info) {
       bus.emit('render')
@@ -51,7 +51,7 @@ function trackNetwork (state, bus) {
 
     if (state.opts.sources) trackSources()
     if (state.stats) return trackSpeed()
-    bus.once('dat:stats', trackSpeed)
+    bus.once('dwebx:stats', trackSpeed)
 
     function trackSpeed () {
       setInterval(function () {
@@ -71,9 +71,9 @@ function trackNetwork (state, bus) {
 
           // TODO: how to get right peer from archive.content?
           // var remote = conn.feeds[1].remoteLength
-          // // state.dat.archive.content.sources[0].feed.id.toString('hex')
+          // // state.dwebx.archive.content.sources[0].feed.id.toString('hex')
           // if (!remote) return
-          // return remote / dat.archive.content.length
+          // return remote / dwebx.archive.content.length
         }
 
         conn.feeds.map(function (feed) {

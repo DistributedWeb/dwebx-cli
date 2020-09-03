@@ -4,12 +4,12 @@ var rimraf = require('rimraf')
 var request = require('request')
 var spawn = require('./helpers/spawn.js')
 
-var dat = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
+var dwebx = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
 var fixtures = path.join(__dirname, 'fixtures')
 
 test('http - share with http', function (t) {
-  rimraf.sync(path.join(fixtures, '.dat'))
-  var cmd = dat + ' share --http'
+  rimraf.sync(path.join(fixtures, '.dwebx'))
+  var cmd = dwebx + ' share --http'
   var st = spawn(t, cmd, { cwd: fixtures })
 
   st.stdout.match(function (output) {
@@ -37,8 +37,8 @@ test('http - share with http', function (t) {
 })
 
 test('http - share with http other port', function (t) {
-  rimraf.sync(path.join(fixtures, '.dat'))
-  var cmd = dat + ' share --http 3333'
+  rimraf.sync(path.join(fixtures, '.dwebx'))
+  var cmd = dwebx + ' share --http 3333'
   var st = spawn(t, cmd, { cwd: fixtures })
 
   st.stdout.match(function (output) {

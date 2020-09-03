@@ -2,22 +2,22 @@ module.exports = {
   name: 'status',
   command: status,
   help: [
-    'Get information on about the Dat in a directory.',
+    'Get information on about the DWebX in a directory.',
     '',
-    'Usage: dat status'
+    'Usage: dwebx status'
   ].join('\n'),
   options: []
 }
 
 function status (opts) {
-  var Dat = require('dat-node')
+  var DWebX = require('dwebx-node')
   var neatLog = require('neat-log')
   var statusUI = require('../ui/status')
   var onExit = require('../lib/exit')
   var parseArgs = require('../parse-args')
-  var debug = require('debug')('dat')
+  var debug = require('debug')('dwebx')
 
-  debug('dat status')
+  debug('dwebx status')
   if (!opts.dir) {
     opts.dir = parseArgs(opts).dir || process.cwd()
   }
@@ -28,15 +28,15 @@ function status (opts) {
   neat.use(function (state, bus) {
     state.opts = opts
 
-    Dat(opts.dir, opts, function (err, dat) {
-      if (err && err.name === 'MissingError') return bus.emit('exit:warn', 'Sorry, could not find a dat in this directory.')
+    DWebX(opts.dir, opts, function (err, dwebx) {
+      if (err && err.name === 'MissingError') return bus.emit('exit:warn', 'Sorry, could not find a dwebx in this directory.')
       if (err) return bus.emit('exit:error', err)
 
-      state.dat = dat
-      var stats = dat.trackStats()
-      if (stats.get().version === dat.version) return exit()
+      state.dwebx = dwebx
+      var stats = dwebx.trackStats()
+      if (stats.get().version === dwebx.version) return exit()
       stats.on('update', function () {
-        if (stats.get().version === dat.version) return exit()
+        if (stats.get().version === dwebx.version) return exit()
       })
 
       function exit () {

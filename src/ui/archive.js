@@ -15,21 +15,21 @@ var pkg = require('../../package.json')
 module.exports = archiveUI
 
 function archiveUI (state) {
-  if (!state.dat) return 'Starting Dat program...'
-  if (!state.writable && !state.hasContent) return 'Connecting to dat network...'
+  if (!state.dwebx) return 'Starting DWebX program...'
+  if (!state.writable && !state.hasContent) return 'Connecting to dwebx network...'
   if (!state.warnings) state.warnings = []
 
-  var dat = state.dat
-  var stats = dat.stats.get()
-  var title = (state.dat.resumed) ? '' : `Created new dat in ${dat.path}${path.sep}.dat\n`
+  var dwebx = state.dwebx
+  var stats = dwebx.stats.get()
+  var title = (state.dwebx.resumed) ? '' : `Created new dwebx in ${dwebx.path}${path.sep}.dwebx\n`
   var progressView
 
   if (state.writable || state.opts.showKey) {
-    title += `${keyEl(dat.key)}\n`
+    title += `${keyEl(dwebx.key)}\n`
   }
   if (state.title) title += state.title
-  else if (state.writable) title += 'Sharing dat'
-  else title += 'Downloading dat'
+  else if (state.writable) title += 'Sharing dwebx'
+  else title += 'Downloading dwebx'
   if (state.opts.sparse) title += `: ${state.opts.selectedFiles.length} ${pluralize('file', state.opts.selectedFiles.length)} (${pretty(state.selectedByteLength)})`
   else if (stats.version > 0) title += `: ${stats.files} ${pluralize('file', stats.file)} (${pretty(stats.byteLength)})`
   else if (stats.version === 0) title += ': (empty archive)'
@@ -53,6 +53,6 @@ function archiveUI (state) {
     ${progressView}
     ${state.opts.sources ? sourcesUI(state) : ''}
     ${state.warnings ? warningsUI(state) : ''}
-    ${state.exiting ? 'Exiting the Dat program...' : chalk.dim('Ctrl+C to Exit')}
+    ${state.exiting ? 'Exiting the DWebX program...' : chalk.dim('Ctrl+C to Exit')}
   `)
 }

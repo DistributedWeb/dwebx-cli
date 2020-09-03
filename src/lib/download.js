@@ -1,4 +1,4 @@
-var debug = require('debug')('dat')
+var debug = require('debug')('dwebx')
 var xtend = Object.assign
 
 module.exports = trackDownload
@@ -8,7 +8,7 @@ function trackDownload (state, bus) {
   bus.once('archive:content', track)
 
   function track () {
-    var archive = state.dat.archive
+    var archive = state.dwebx.archive
 
     state.download = xtend({
       modified: false,
@@ -41,7 +41,7 @@ function trackDownload (state, bus) {
           setTimeout(exit, delayInMilliseconds)
         }
       }
-      if (state.dat.archive.version === 0) {
+      if (state.dwebx.archive.version === 0) {
         // TODO: deal with this.
         // Sync sometimes fires early when it should wait for update.
       }

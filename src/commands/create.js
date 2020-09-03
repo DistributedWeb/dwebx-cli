@@ -2,9 +2,9 @@ module.exports = {
   name: 'create',
   command: create,
   help: [
-    'Create an empty dat and dat.json',
+    'Create an empty dwebx and dwebx.json',
     '',
-    'Usage: dat create [directory]'
+    'Usage: dwebx create [directory]'
   ].join('\n'),
   options: [
     {
@@ -12,15 +12,15 @@ module.exports = {
       boolean: true,
       default: false,
       abbr: 'y',
-      help: 'Skip dat.json creation.'
+      help: 'Skip dwebx.json creation.'
     },
     {
       name: 'title',
-      help: 'the title property for dat.json'
+      help: 'the title property for dwebx.json'
     },
     {
       name: 'description',
-      help: 'the description property for dat.json'
+      help: 'the description property for dwebx.json'
     }
   ]
 }
@@ -28,29 +28,29 @@ module.exports = {
 function create (opts) {
   var path = require('path')
   var fs = require('fs')
-  var Dat = require('dat-node')
+  var DWebX = require('dwebx-node')
   var output = require('neat-log/output')
-  var DatJson = require('dat-json')
+  var DatJson = require('dwebx-json')
   var prompt = require('prompt')
   var chalk = require('chalk')
   var parseArgs = require('../parse-args')
-  var debug = require('debug')('dat')
+  var debug = require('debug')('dwebx')
 
-  debug('dat create')
+  debug('dwebx create')
   if (!opts.dir) {
     opts.dir = parseArgs(opts).dir || process.cwd()
   }
 
-  var welcome = `Welcome to ${chalk.green(`dat`)} program!`
+  var welcome = `Welcome to ${chalk.green(`dwebx`)} program!`
   var intro = output(`
-    You can turn any folder on your computer into a Dat.
-    A Dat is a folder with some magic.
+    You can turn any folder on your computer into a DWebX.
+    A DWebX is a folder with some magic.
 
-    Your dat is ready!
-    We will walk you through creating a 'dat.json' file.
-    (You can skip dat.json and get started now.)
+    Your dwebx is ready!
+    We will walk you through creating a 'dwebx.json' file.
+    (You can skip dwebx.json and get started now.)
 
-    Learn more about dat.json: ${chalk.blue(`https://github.com/datprotocol/dat.json`)}
+    Learn more about dwebx.json: ${chalk.blue(`https://github.com/datprotocol/dwebx.json`)}
 
     ${chalk.dim('Ctrl+C to exit at any time')}
 
@@ -61,29 +61,29 @@ function create (opts) {
   opts.errorIfExists = true
 
   console.log(welcome)
-  Dat(opts.dir, opts, function (err, dat) {
-    if (err && err.name === 'ExistsError') return exitErr('\nArchive already exists.\nYou can use `dat sync` to update.')
+  DWebX(opts.dir, opts, function (err, dwebx) {
+    if (err && err.name === 'ExistsError') return exitErr('\nArchive already exists.\nYou can use `dwebx sync` to update.')
     if (err) return exitErr(err)
 
     outro = output(`
 
-      Created empty Dat in ${dat.path}/.dat
+      Created empty DWebX in ${dwebx.path}/.dwebx
 
       Now you can add files and share:
-      * Run ${chalk.green(`dat share`)} to create metadata and sync.
-      * Copy the unique dat link and securely share it.
+      * Run ${chalk.green(`dwebx share`)} to create metadata and sync.
+      * Copy the unique dwebx link and securely share it.
 
-      ${chalk.blue(`dat://${dat.key.toString('hex')}`)}
+      ${chalk.blue(`dwebx://${dwebx.key.toString('hex')}`)}
     `)
 
     if (opts.yes) return done()
 
     console.log(intro)
-    var datjson = DatJson(dat.archive, { file: path.join(opts.dir, 'dat.json') })
-    fs.readFile(path.join(opts.dir, 'dat.json'), 'utf-8', function (err, data) {
+    var datjson = DatJson(dwebx.archive, { file: path.join(opts.dir, 'dwebx.json') })
+    fs.readFile(path.join(opts.dir, 'dwebx.json'), 'utf-8', function (err, data) {
       if (err || !data) return doPrompt()
       data = JSON.parse(data)
-      debug('read existing dat.json data', data)
+      debug('read existing dwebx.json data', data)
       doPrompt(data)
     })
 

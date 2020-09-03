@@ -1,6 +1,6 @@
-var stringKey = require('dat-encoding').toStr
+var stringKey = require('dwebx-encoding').toStr
 var chalk = require('chalk')
 
 module.exports = function (key) {
-  return `${chalk.blue(`dat://${stringKey(key)}`)}`
+  return `${chalk.blue(`dwebx://${stringKey(key)}`)}`
 }

@@ -1,8 +1,8 @@
-name: dat
+name: dwebx
 version: '13.11.4'
 summary: Share & live sync files anywhere via command line
 description: |
-  Use Dat command line to share files with version control, 
+  Use DWebX command line to share files with version control, 
   back up data to servers, browse remote files on demand, 
   and automate long-term data preservation.
 
@@ -10,8 +10,8 @@ grade: 'stable'
 confinement: 'strict'
 
 apps:
-  dat: 
-    command: dat
+  dwebx: 
+    command: dwebx
     plugs:
       - home
       - network
@@ -19,8 +19,8 @@ apps:
       - removable-media
 
 parts:
-  dat:
-    source: https://github.com/datproject/dat.git
+  dwebx:
+    source: https://github.com/distributedweb/dwebx.git
     source-tag: 'v13.11.4'
     plugin: nodejs
     node-engine: 10.9.0

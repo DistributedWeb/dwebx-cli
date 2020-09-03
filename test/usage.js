@@ -2,11 +2,11 @@ var path = require('path')
 var test = require('tape')
 var spawn = require('./helpers/spawn.js')
 
-var dat = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
+var dwebx = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
 var version = require('../package.json').version
 
 test('usage - prints usage', function (t) {
-  var d = spawn(t, dat)
+  var d = spawn(t, dwebx)
   d.stderr.match(function (output) {
     var usage = output.indexOf('Usage') > -1
     if (!usage) return false
@@ -16,7 +16,7 @@ test('usage - prints usage', function (t) {
 })
 
 test('usage - prints version', function (t) {
-  var d = spawn(t, dat + ' -v')
+  var d = spawn(t, dwebx + ' -v')
   d.stderr.match(function (output) {
     var ver = output.indexOf(version) > -1
     if (!ver) return false
@@ -26,7 +26,7 @@ test('usage - prints version', function (t) {
 })
 
 test('usage - also prints version', function (t) {
-  var d = spawn(t, dat + ' -v')
+  var d = spawn(t, dwebx + ' -v')
   d.stderr.match(function (output) {
     var ver = output.indexOf(version) > -1
     if (!ver) return false
@@ -36,7 +36,7 @@ test('usage - also prints version', function (t) {
 })
 
 test('usage - help prints usage', function (t) {
-  var d = spawn(t, dat + ' help')
+  var d = spawn(t, dwebx + ' help')
   d.stderr.match(function (output) {
     var usage = output.indexOf('Usage') > -1
     if (!usage) return false

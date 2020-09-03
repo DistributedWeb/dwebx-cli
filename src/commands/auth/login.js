@@ -2,16 +2,16 @@ module.exports = {
   name: 'login',
   command: login,
   help: [
-    'Login to a Dat registry server',
-    'Usage: dat login [<registry>]',
+    'Login to a DWebX registry server',
+    'Usage: dwebx login [<registry>]',
     '',
-    'Publish your dats so other users can discovery them.',
+    'Publish your dvaults so other users can discovery them.',
     'Please register before trying to login.'
   ].join('\n'),
   options: [
     {
       name: 'server',
-      help: 'Your Dat registry server (must be registered to login).'
+      help: 'Your DWebX registry server (must be registered to login).'
     }
   ]
 }
@@ -24,8 +24,8 @@ function login (opts) {
 
   if (opts._[0]) opts.server = opts._[0]
   var welcome = output(`
-    Welcome to ${chalk.green(`dat`)} program!
-    Login to publish your dats.
+    Welcome to ${chalk.green(`dwebx`)} program!
+    Login to publish your dvaults.
 
   `)
   console.log(welcome)
@@ -33,8 +33,8 @@ function login (opts) {
   var schema = {
     properties: {
       server: {
-        description: chalk.magenta('Dat registry'),
-        default: opts.server || 'datbase.org',
+        description: chalk.magenta('DWebX registry'),
+        default: opts.server || 'dwebx.org',
         required: true
       },
       email: {
@@ -73,9 +73,9 @@ function login (opts) {
       console.log(output(`
         Logged you in to ${chalk.green(opts.server)}!
 
-        Now you can publish dats and share:
-        * Run ${chalk.green(`dat publish`)} to publish a dat!
-        * View & Share your dats at ${opts.server}
+        Now you can publish dvaults and share:
+        * Run ${chalk.green(`dwebx publish`)} to publish a dwebx!
+        * View & Share your dvaults at ${opts.server}
       `))
       process.exit(0)
     })

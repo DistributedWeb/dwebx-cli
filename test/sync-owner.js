@@ -4,12 +4,12 @@
 // var test = require('tape')
 // var mkdirp = require('mkdirp')
 // var rimraf = require('rimraf')
-// var Dat = require('dat-node')
+// var DWebX = require('dwebx-node')
 // var spawn = require('./helpers/spawn.js')
 // var help = require('./helpers')
 
-// var dat = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
-// if (process.env.TRAVIS) dat += ' --no-watch '
+// var dwebx = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
+// if (process.env.TRAVIS) dwebx += ' --no-watch '
 // var fixtures = path.join(__dirname, 'fixtures')
 // var downDat
 
@@ -17,9 +17,9 @@
 // try { fs.unlinkSync(path.join(fixtures, '.DS_Store')) } catch (e) { /* ignore error */ }
 
 // test('sync-owner - errors without create first', function (t) {
-//   rimraf.sync(path.join(fixtures, '.dat'))
-//   // cmd: dat sync
-//   var cmd = dat + ' sync'
+//   rimraf.sync(path.join(fixtures, '.dwebx'))
+//   // cmd: dwebx sync
+//   var cmd = dwebx + ' sync'
 //   var st = spawn(t, cmd, {cwd: fixtures})
 
 //   st.stderr.match(function (output) {
@@ -31,10 +31,10 @@
 //   st.end()
 // })
 
-// test('sync-owner - create a dat for syncing', function (t) {
-//   rimraf.sync(path.join(fixtures, '.dat'))
-//   // cmd: dat create
-//   var cmd = dat + ' create --import'
+// test('sync-owner - create a dwebx for syncing', function (t) {
+//   rimraf.sync(path.join(fixtures, '.dwebx'))
+//   // cmd: dwebx create
+//   var cmd = dwebx + ' create --import'
 //   var st = spawn(t, cmd, {cwd: fixtures})
 //   st.stdout.match(function (output) {
 //     var importFinished = output.indexOf('import finished') > -1
@@ -47,14 +47,14 @@
 // })
 
 // test('sync-owner - default opts', function (t) {
-//   // cmd: dat sync
-//   var cmd = dat + ' sync'
+//   // cmd: dwebx sync
+//   var cmd = dwebx + ' sync'
 //   var st = spawn(t, cmd, {cwd: fixtures, end: false})
 
 //   var key
 
 //   st.stdout.match(function (output) {
-//     var sharing = output.indexOf('Dat Network') > -1
+//     var sharing = output.indexOf('DWebX Network') > -1
 //     if (!sharing) return false
 
 //     key = help.matchLink(output)
@@ -72,7 +72,7 @@
 //     var downloadDir = path.join(help.testFolder(), '' + Date.now())
 //     mkdirp.sync(downloadDir)
 
-//     Dat(downloadDir, { key: key }, function (err, tmpDat) {
+//     DWebX(downloadDir, { key: key }, function (err, tmpDat) {
 //       if (err) throw err
 
 //       downDat = tmpDat
@@ -90,9 +90,9 @@
 // })
 
 // test('sync-owner - create without import for syncing', function (t) {
-//   rimraf.sync(path.join(fixtures, '.dat'))
-//   // cmd: dat create
-//   var cmd = dat + ' create'
+//   rimraf.sync(path.join(fixtures, '.dwebx'))
+//   // cmd: dwebx create
+//   var cmd = dwebx + ' create'
 //   var st = spawn(t, cmd, {cwd: fixtures})
 //   st.stdout.match(function (output) {
 //     if (output.indexOf('created') > -1) return true
@@ -103,8 +103,8 @@
 // })
 
 // test('sync-owner - imports after no-import create', function (t) {
-//   // cmd: dat sync
-//   var cmd = dat + ' sync'
+//   // cmd: dwebx sync
+//   var cmd = dwebx + ' sync'
 //   var st = spawn(t, cmd, {cwd: fixtures})
 
 //   st.stdout.match(function (output) {
@@ -128,11 +128,11 @@
 // })
 
 // // TODO: this test is causing serious memory issues.
-// // HELP. Maybe related to https://github.com/datproject/dat-node/issues/71
+// // HELP. Maybe related to https://github.com/distributedweb/dwebx-node/issues/71
 // // test('sync-owner - turn off ignore hidden', function (t) {
-// //   // cmd: dat sync
+// //   // cmd: dwebx sync
 // //   var hiddenFile = path.join(fixtures, '.hidden-file')
-// //   var cmd = dat + ' sync --no-ignore-hidden'
+// //   var cmd = dwebx + ' sync --no-ignore-hidden'
 // //   fs.writeFile(hiddenFile, 'You cannot see me', function (err) {
 // //     t.error(err)
 
@@ -140,7 +140,7 @@
 // //     var key
 
 // //     st.stdout.match(function (output) {
-// //       var sharing = output.indexOf('Dat Network') > -1
+// //       var sharing = output.indexOf('DWebX Network') > -1
 // //       if (!sharing) return false
 
 // //       key = help.matchLink(output)
@@ -155,7 +155,7 @@
 // //       var downloadDir = path.join(help.testFolder(), '' + Date.now())
 // //       mkdirp.sync(downloadDir)
 
-// //       Dat(downloadDir, { key: key }, function (err, downDat) {
+// //       DWebX(downloadDir, { key: key }, function (err, downDat) {
 // //         if (err) throw err
 
 // //         downDat.joinNetwork()
@@ -187,7 +187,7 @@
 
 // test('sync-owner - port and utp options', function (t) {
 //   var port = 3281
-//   var cmd = dat + ' sync --port ' + port + ' --no-utp'
+//   var cmd = dwebx + ' sync --port ' + port + ' --no-utp'
 //   var st = spawn(t, cmd, {cwd: fixtures, end: false})
 //   st.stderr.empty()
 
@@ -214,7 +214,7 @@
 // })
 
 // test('sync-owner - shorthand', function (t) {
-//   var cmd = dat + ' .'
+//   var cmd = dwebx + ' .'
 //   var st = spawn(t, cmd, {cwd: fixtures})
 
 //   st.stdout.match(function (output) {
@@ -231,7 +231,7 @@
 // })
 
 // test('sync-owner - dir argument', function (t) {
-//   var cmd = dat + ' sync ' + fixtures
+//   var cmd = dwebx + ' sync ' + fixtures
 //   var st = spawn(t, cmd)
 
 //   st.stdout.match(function (output) {
@@ -252,7 +252,7 @@
 //     var liveFile = path.join(fixtures, 'live.txt')
 //     var wroteFile = false
 
-//     var cmd = dat + ' sync --watch'
+//     var cmd = dwebx + ' sync --watch'
 //     var st = spawn(t, cmd, {cwd: fixtures})
 
 //     st.stdout.match(function (output) {
@@ -278,5 +278,5 @@
 // }
 
 // test.onFinish(function () {
-//   rimraf.sync(path.join(fixtures, '.dat'))
+//   rimraf.sync(path.join(fixtures, '.dwebx'))
 // })

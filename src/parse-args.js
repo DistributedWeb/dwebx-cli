@@ -1,9 +1,9 @@
 var fs = require('fs')
 var path = require('path')
-var encoding = require('dat-encoding')
+var encoding = require('dwebx-encoding')
 
 module.exports = function (opts) {
-  // dat [<cmd>] arg1 arg2 [options]
+  // dwebx [<cmd>] arg1 arg2 [options]
   // parse args without options from opts._
   // return parsed { dir, key }
   var parsed = {
@@ -11,10 +11,10 @@ module.exports = function (opts) {
     dir: opts.dir || null // process.cwd() ?
   }
 
-  // dat [<cmd>]
+  // dwebx [<cmd>]
   if (!opts._.length) return parsed
 
-  // dat [<cmd>] arg1 arg2
+  // dwebx [<cmd>] arg1 arg2
   // arg1 = key
   // arg2 = dir
   if (opts._.length === 2) {
@@ -23,7 +23,7 @@ module.exports = function (opts) {
     return parsed
   }
 
-  // dat [<cmd>] arg
+  // dwebx [<cmd>] arg
   // arg = dir or key
 
   // First, check if key

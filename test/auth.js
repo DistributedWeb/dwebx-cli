@@ -7,7 +7,7 @@ var spawn = require('./helpers/spawn')
 var help = require('./helpers')
 var authServer = require('./helpers/auth-server')
 
-var dat = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
+var dwebx = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
 var baseTestDir = help.testFolder()
 var fixtures = path.join(__dirname, 'fixtures')
 
@@ -16,14 +16,14 @@ var SERVER = 'http://localhost:' + port
 var config = path.join(__dirname, '.datrc-test')
 var opts = ' --server=' + SERVER + ' --config=' + config
 
-dat += opts
+dwebx += opts
 rimraf.sync(config)
 
 authServer(port, function (err, server, closeServer) {
   if (err) throw err
   if (!server) return
   test('auth - whoami works when not logged in', function (t) {
-    var cmd = dat + ' whoami '
+    var cmd = dwebx + ' whoami '
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stderr.match(function (output) {
       t.same(output.trim(), 'Not logged in.', 'printed correct output')
@@ -34,7 +34,7 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - register works', function (t) {
-    var cmd = dat + ' register --email=hello@bob.com --password=joe --username=joe'
+    var cmd = dwebx + ' register --email=hello@bob.com --password=joe --username=joe'
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stdout.match(function (output) {
       t.same(output.trim(), 'Registered successfully.', 'output success message')
@@ -45,7 +45,7 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - login works', function (t) {
-    var cmd = dat + ' login --email=hello@bob.com --password=joe'
+    var cmd = dwebx + ' login --email=hello@bob.com --password=joe'
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stdout.match(function (output) {
       t.same(output.trim(), 'Logged in successfully.', 'output success message')
@@ -56,7 +56,7 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - whoami works', function (t) {
-    var cmd = dat + ' whoami'
+    var cmd = dwebx + ' whoami'
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stdout.match(function (output) {
       t.same('hello@bob.com', output.trim(), 'email printed')
@@ -67,8 +67,8 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - publish before create fails', function (t) {
-    var cmd = dat + ' publish'
-    rimraf.sync(path.join(fixtures, '.dat'))
+    var cmd = dwebx + ' publish'
+    rimraf.sync(path.join(fixtures, '.dwebx'))
     var st = spawn(t, cmd, { cwd: fixtures })
     st.stdout.empty()
     st.stderr.match(function (output) {
@@ -78,10 +78,10 @@ authServer(port, function (err, server, closeServer) {
     st.end()
   })
 
-  test('auth - create dat to publish', function (t) {
-    rimraf.sync(path.join(fixtures, '.dat'))
-    rimraf.sync(path.join(fixtures, 'dat.json'))
-    var cmd = dat + ' create --no-import'
+  test('auth - create dwebx to publish', function (t) {
+    rimraf.sync(path.join(fixtures, '.dwebx'))
+    rimraf.sync(path.join(fixtures, 'dwebx.json'))
+    var cmd = dwebx + ' create --no-import'
     var st = spawn(t, cmd, { cwd: fixtures })
     st.stdout.match(function (output) {
       var link = help.matchLink(output)
@@ -93,8 +93,8 @@ authServer(port, function (err, server, closeServer) {
     st.end()
   })
 
-  test('auth - publish our awesome dat', function (t) {
-    var cmd = dat + ' publish --name awesome'
+  test('auth - publish our awesome dwebx', function (t) {
+    var cmd = dwebx + ' publish --name awesome'
     var st = spawn(t, cmd, { cwd: fixtures })
     st.stdout.match(function (output) {
       var published = output.indexOf('Successfully published') > -1
@@ -106,21 +106,21 @@ authServer(port, function (err, server, closeServer) {
     st.end()
   })
 
-  test('auth - publish our awesome dat with bad dat.json url', function (t) {
-    fs.readFile(path.join(fixtures, 'dat.json'), function (err, contents) {
+  test('auth - publish our awesome dwebx with bad dwebx.json url', function (t) {
+    fs.readFile(path.join(fixtures, 'dwebx.json'), function (err, contents) {
       t.ifError(err)
       var info = JSON.parse(contents)
       var oldUrl = info.url
       info.url = info.url.replace('e', 'a')
-      fs.writeFile(path.join(fixtures, 'dat.json'), JSON.stringify(info), function (err) {
+      fs.writeFile(path.join(fixtures, 'dwebx.json'), JSON.stringify(info), function (err) {
         t.ifError(err, 'error after write')
-        var cmd = dat + ' publish --name awesome'
+        var cmd = dwebx + ' publish --name awesome'
         var st = spawn(t, cmd, { cwd: fixtures })
         st.stdout.match(function (output) {
           var published = output.indexOf('Successfully published') > -1
           if (!published) return false
           t.ok(published, 'published')
-          t.same(help.datJson(fixtures).url, oldUrl, 'has dat.json with url')
+          t.same(help.datJson(fixtures).url, oldUrl, 'has dwebx.json with url')
           return true
         })
         st.stderr.empty()
@@ -136,7 +136,7 @@ authServer(port, function (err, server, closeServer) {
     var baseDir = path.join(baseTestDir, 'dat_registry_dir')
     mkdirp.sync(baseDir)
     var downloadDir = path.join(baseDir, shortName.split('/').pop())
-    var cmd = dat + ' clone ' + shortName
+    var cmd = dwebx + ' clone ' + shortName
     var st = spawn(t, cmd, { cwd: baseDir })
     st.stdout.match(function (output) {
       var lookingFor = output.indexOf('Looking for') > -1
@@ -152,21 +152,21 @@ authServer(port, function (err, server, closeServer) {
     })
   })
 
-  test('auth - publish our awesome dat without a dat.json file', function (t) {
-    rimraf(path.join(fixtures, 'dat.json'), function (err) {
+  test('auth - publish our awesome dwebx without a dwebx.json file', function (t) {
+    rimraf(path.join(fixtures, 'dwebx.json'), function (err) {
       t.ifError(err)
-      var cmd = dat + ' publish --name another-awesome'
+      var cmd = dwebx + ' publish --name another-awesome'
       var st = spawn(t, cmd, { cwd: fixtures })
       st.stdout.match(function (output) {
         var published = output.indexOf('Successfully published') > -1
         if (!published) return false
         t.ok(published, 'published')
-        t.same(help.datJson(fixtures).name, 'another-awesome', 'has dat.json with name')
+        t.same(help.datJson(fixtures).name, 'another-awesome', 'has dwebx.json with name')
         return true
       })
       st.stderr.empty()
       st.end(function () {
-        rimraf.sync(path.join(fixtures, '.dat'))
+        rimraf.sync(path.join(fixtures, '.dwebx'))
       })
     })
   })
@@ -176,10 +176,10 @@ authServer(port, function (err, server, closeServer) {
     var baseDir = path.join(baseTestDir, 'dat_registry_dir_too')
     mkdirp.sync(baseDir)
     var downloadDir = path.join(baseDir, shortName.split('/').pop())
-    var cmd = dat + ' clone ' + shortName
+    var cmd = dwebx + ' clone ' + shortName
     var st = spawn(t, cmd, { cwd: baseDir })
     st.stderr.match(function (output) {
-      t.same(output.trim(), 'Dat with that name not found.', 'not found')
+      t.same(output.trim(), 'DWebX with that name not found.', 'not found')
       st.kill()
       return true
     })
@@ -190,7 +190,7 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - logout works', function (t) {
-    var cmd = dat + ' logout'
+    var cmd = dwebx + ' logout'
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stdout.match(function (output) {
       t.same('Logged out.', output.trim(), 'output correct')
@@ -201,7 +201,7 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - logout prints correctly when trying to log out twice', function (t) {
-    var cmd = dat + ' logout'
+    var cmd = dwebx + ' logout'
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stderr.match(function (output) {
       t.same('Not logged in.', output.trim(), 'output correct')
@@ -212,7 +212,7 @@ authServer(port, function (err, server, closeServer) {
   })
 
   test('auth - whoami works after logging out', function (t) {
-    var cmd = dat + ' whoami'
+    var cmd = dwebx + ' whoami'
     var st = spawn(t, cmd, { cwd: baseTestDir })
     st.stderr.match(function (output) {
       t.same('Not logged in.', output.trim())

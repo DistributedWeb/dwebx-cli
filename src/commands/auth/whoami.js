@@ -3,7 +3,7 @@ module.exports = {
   command: whoami,
   help: [
     'Get login information',
-    'Usage: dat login [<registry>]',
+    'Usage: dwebx login [<registry>]',
     '',
     'Get information for active registry or specify your registry.'
   ].join('\n'),
@@ -29,7 +29,7 @@ function whoami (opts) {
     return exitErr('No login information found for that server.')
   }
   console.log(output(`
-    Your active Dat registry information:
+    Your active DWebX registry information:
 
     ---
     ${chalk.green(login.server)}
@@ -38,7 +38,7 @@ function whoami (opts) {
     ---
 
     Change your registry by logging in again:
-    ${chalk.dim.green('dat login <registry-url>')}
+    ${chalk.dim.green('dwebx login <registry-url>')}
   `))
   process.exit(0)
 }

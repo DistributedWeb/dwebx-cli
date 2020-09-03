@@ -2,9 +2,9 @@ module.exports = {
   name: 'clone',
   command: clone,
   help: [
-    'Clone a remote Dat archive',
+    'Clone a remote DWebX archive',
     '',
-    'Usage: dat clone <link> [download-folder]'
+    'Usage: dwebx clone <link> [download-folder]'
   ].join('\n'),
   options: [
     {
@@ -24,7 +24,7 @@ module.exports = {
       boolean: true,
       default: false,
       abbr: 'k',
-      help: 'print out the dat key'
+      help: 'print out the dwebx key'
     }
   ]
 }
@@ -33,15 +33,15 @@ function clone (opts) {
   var fs = require('fs')
   var path = require('path')
   var rimraf = require('rimraf')
-  var Dat = require('dat-node')
-  var linkResolve = require('dat-link-resolve')
+  var DWebX = require('dwebx-node')
+  var linkResolve = require('dwebx-link-resolve')
   var neatLog = require('neat-log')
   var archiveUI = require('../ui/archive')
   var trackArchive = require('../lib/archive')
   var discoveryExit = require('../lib/discovery-exit')
   var onExit = require('../lib/exit')
   var parseArgs = require('../parse-args')
-  var debug = require('debug')('dat')
+  var debug = require('debug')('dwebx')
 
   var parsed = parseArgs(opts)
   opts.key = parsed.key || opts._[0] // pass other links to resolver
@@ -51,12 +51,12 @@ function clone (opts) {
 
   debug('clone()')
 
-  // cmd: dat /path/to/dat.json (opts.key is path to dat.json)
+  // cmd: dwebx /path/to/dwebx.json (opts.key is path to dwebx.json)
   if (fs.existsSync(opts.key)) {
     try {
       opts.key = getDatJsonKey()
     } catch (e) {
-      debug('error reading dat.json key', e)
+      debug('error reading dwebx.json key', e)
     }
   }
 
@@ -78,7 +78,7 @@ function clone (opts) {
 
     linkResolve(opts.key, function (err, key) {
       if (err && err.message.indexOf('Invalid key') === -1) return bus.emit('exit:error', 'Could not resolve link')
-      else if (err) return bus.emit('exit:warn', 'Link is not a valid Dat link.')
+      else if (err) return bus.emit('exit:warn', 'Link is not a valid DWebX link.')
 
       opts.key = key
       createDir(opts.key, function () {
@@ -90,7 +90,7 @@ function clone (opts) {
     function createDir (key, cb) {
       debug('Checking directory for clone')
       // Create the directory if it doesn't exist
-      // If no dir is specified, we put dat in a dir with name = key
+      // If no dir is specified, we put dwebx in a dir with name = key
       if (!opts.dir) opts.dir = key
       if (!Buffer.isBuffer(opts.dir) && typeof opts.dir !== 'string') {
         return bus.emit('exit:error', 'Directory path must be a string or Buffer')
@@ -107,17 +107,17 @@ function clone (opts) {
     }
 
     function runDat () {
-      Dat(opts.dir, opts, function (err, dat) {
+      DWebX(opts.dir, opts, function (err, dwebx) {
         if (err && err.name === 'ExistsError') return bus.emit('exit:warn', 'Existing archive in this directory. Use pull or sync to update.')
         if (err) {
-          if (createdDirectory) rimraf.sync(dat.path)
+          if (createdDirectory) rimraf.sync(dwebx.path)
           return bus.emit('exit:error', err)
         }
-        if (dat.writable) return bus.emit('exit:warn', 'Archive is writable. Cannot clone your own archive =).')
+        if (dwebx.writable) return bus.emit('exit:warn', 'Archive is writable. Cannot clone your own archive =).')
 
-        state.dat = dat
+        state.dwebx = dwebx
         state.title = 'Cloning'
-        bus.emit('dat')
+        bus.emit('dwebx')
         bus.emit('render')
       })
     }
@@ -127,14 +127,14 @@ function clone (opts) {
     var datPath = opts.key
     var stat = fs.lstatSync(datPath)
 
-    if (stat.isDirectory()) datPath = path.join(datPath, 'dat.json')
+    if (stat.isDirectory()) datPath = path.join(datPath, 'dwebx.json')
 
-    if (!fs.existsSync(datPath) || path.basename(datPath) !== 'dat.json') {
-      if (stat.isFile()) throw new Error('must specify existing dat.json file to read key')
-      throw new Error('directory must contain a dat.json')
+    if (!fs.existsSync(datPath) || path.basename(datPath) !== 'dwebx.json') {
+      if (stat.isFile()) throw new Error('must specify existing dwebx.json file to read key')
+      throw new Error('directory must contain a dwebx.json')
     }
 
-    debug('reading key from dat.json:', datPath)
+    debug('reading key from dwebx.json:', datPath)
     return JSON.parse(fs.readFileSync(datPath, 'utf8')).url
   }
 }

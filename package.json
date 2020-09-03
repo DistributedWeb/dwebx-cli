@@ -1,17 +1,17 @@
 {
-  "name": "dat",
-  "version": "13.13.1",
-  "description": "Dat is the package manager for data. Easily share and version control data.",
+  "name": "dwebx-cli",
+  "version": "1.0.0",
+  "description": "DWebX is the package manager for data. Easily share and version control data.",
   "keywords": [
-    "dat",
-    "dat protocol",
-    "hyperdrive",
+    "dwebx",
+    "dwebx protocol",
+    "ddrive",
     "decentralized",
     "file sharing"
   ],
   "main": "index.js",
   "bin": {
-    "dat": "bin/cli.js"
+    "dwebx": "bin/cli.js"
   },
   "scripts": {
     "auth-server": "DEBUG=* node scripts/auth-server.js",
@@ -21,18 +21,18 @@
     "test": "standard && npm run deps && tape 'test/*.js'",
     "test-only": "tape 'test/*.js'",
     "package": "rm -rf builds && npm run pkg && ./package.sh",
-    "pkg": "pkg package.json -o builds/dat"
+    "pkg": "pkg package.json -o builds/dwebx"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/datproject/dat.git"
+    "url": "git://github.com/distributedweb/dwebx.git"
   },
-  "author": "Dat Project",
+  "author": "DWebX Project",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/datproject/dat/issues"
+    "url": "https://github.com/distributedweb/dwebx/issues"
   },
-  "homepage": "https://datproject.org",
+  "homepage": "https://dwebx.org",
   "directories": {
     "test": "tests"
   },
@@ -40,13 +40,13 @@
     "bytes": "^3.1.0",
     "chalk": "^2.4.2",
     "cli-truncate": "^1.0.0",
-    "dat-doctor": "^2.1.2",
-    "dat-encoding": "^5.0.1",
-    "dat-json": "^1.0.3",
-    "dat-link-resolve": "^2.3.0",
-    "dat-log": "^1.2.0",
-    "dat-node": "^3.5.15",
-    "dat-registry": "^4.0.1",
+    "dwebx-doctor": "git://github.com/DistributedWeb/dwebx-doctor.git#1127c9e825e0518ad9def798f621c98a1e329a90",
+    "dwebx-encoding": "git://github.com/DistributedWeb/dwebx-encoding.git#adbab1965b1152c3a7252ca01807e9744c713398",
+    "dwebx-json": "git://github.com/DistributedWeb/dwebx-json.git#64e65261bcbaa34c6478c19a9cc59c359661a0eb",
+    "dwebx-link-resolve": "git://github.com/DistributedWeb/dwebx-link-resolve.git#24ef99019ffb3fc8ae5b0a917323196098a8b0d2",
+    "dwebx-log": "git://github.com/DistributedWeb/dwebx-log.git#1a569aac13574c34d34a8c3d888231417946bcdb",
+    "dwebx-node": "git://github.com/DistributedWeb/dwebx-node.git#52c5bc44c5b7803917409e6b72a4feee6605a79d",
+    "dwebx-registry": "git://github.com/DistributedWeb/dwebx-registry.git#6655d6b50423b8ebbf84eb1f07e08e4c5f1b011c",
     "debug": "^4.0.0",
     "neat-log": "^3.1.0",
     "prettier-bytes": "^1.0.3",
@@ -62,8 +62,8 @@
   "devDependencies": {
     "cross-zip-cli": "^1.0.0",
     "dependency-check": "^3.3.0",
-    "hypercore": "^6.25.2",
-    "hyperdiscovery": "^8.0.0",
+    "ddatabase": "git://github.com/DistributedWeb/ddatabase.git#65bde6fc4d9a72df1f99795da0cb11a6ebf895f8",
+    "dwebdiscovery": "git://github.com/DistributedWeb/dwebdiscovery.git#370a30863990ffb38ad62a8a82fe03593232b551",
     "mkdirp": "^0.5.1",
     "pkg": "^4.3.7",
     "random-access-memory": "^3.1.1",

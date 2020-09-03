@@ -4,7 +4,7 @@ module.exports = {
   options: [
     {
       name: 'server',
-      help: 'Unpublish dat from this Registry.'
+      help: 'Unpublish dwebx from this Registry.'
     },
     {
       name: 'confirm',
@@ -19,37 +19,37 @@ module.exports = {
 function unpublish (opts) {
   var prompt = require('prompt')
   var path = require('path')
-  var Dat = require('dat-node')
+  var DWebX = require('dwebx-node')
   var output = require('neat-log/output')
   var chalk = require('chalk')
-  var DatJson = require('dat-json')
+  var DatJson = require('dwebx-json')
   var Registry = require('../registry')
 
   if (opts._[0]) opts.server = opts._[0]
-  if (!opts.dir) opts.dir = process.cwd() // run in dir for `dat unpublish`
+  if (!opts.dir) opts.dir = process.cwd() // run in dir for `dwebx unpublish`
 
   var client = Registry(opts)
   var whoami = client.whoami()
   if (!whoami || !whoami.token) {
     var loginErr = output(`
-      Welcome to ${chalk.green(`dat`)} program!
+      Welcome to ${chalk.green(`dwebx`)} program!
 
       ${chalk.bold('You must login before unpublishing.')}
-      ${chalk.green('dat login')}
+      ${chalk.green('dwebx login')}
     `)
     return exitErr(loginErr)
   }
 
   opts.createIfMissing = false // unpublish dont try to create new one
-  Dat(opts.dir, opts, function (err, dat) {
+  DWebX(opts.dir, opts, function (err, dwebx) {
     if (err) return exitErr(err)
     // TODO better error msg for non-existing archive
-    if (!dat.writable) return exitErr('Sorry, you can only publish a dat that you created.')
+    if (!dwebx.writable) return exitErr('Sorry, you can only publish a dwebx that you created.')
 
-    var datjson = DatJson(dat.archive, { file: path.join(dat.path, 'dat.json') })
+    var datjson = DatJson(dwebx.archive, { file: path.join(dwebx.path, 'dwebx.json') })
     datjson.read(function (err, data) {
       if (err) return exitErr(err)
-      if (!data.name) return exitErr('Try `dat unpublish <name>` with this dat, we are having trouble reading it.')
+      if (!data.name) return exitErr('Try `dwebx unpublish <name>` with this dwebx, we are having trouble reading it.')
       confirm(data.name)
     })
   })
@@ -73,11 +73,11 @@ function unpublish (opts) {
   }
 
   function makeRequest (name) {
-    client.dats.delete({ name: name }, function (err, resp, body) {
+    client.dvaults.delete({ name: name }, function (err, resp, body) {
       if (err && err.message) exitErr(err.message)
       else if (err) exitErr(err.toString())
       if (body.statusCode === 400) return exitErr(new Error(body.message))
-      console.log(`Removed your dat from ${whoami.server}`)
+      console.log(`Removed your dwebx from ${whoami.server}`)
       process.exit(0)
     })
   }

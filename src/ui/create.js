@@ -8,19 +8,19 @@ var pluralize = require('./elements/pluralize')
 module.exports = createUI
 
 function createUI (state) {
-  if (!state.dat) {
+  if (!state.dwebx) {
     return output(`
-    Creating a Dat! Add information to your dat.json file:
+    Creating a DWebX! Add information to your dwebx.json file:
   `)
   }
 
-  var dat = state.dat
-  var stats = dat.stats.get()
+  var dwebx = state.dwebx
+  var stats = dwebx.stats.get()
   var title = '\n'
   var progressView
   var exitMsg = `
-    Your dat is created! Run ${chalk.green('dat sync')} to share:
-    ${keyEl(dat.key)}
+    Your dwebx is created! Run ${chalk.green('dwebx sync')} to share:
+    ${keyEl(dwebx.key)}
   `
   if (!state.opts.import) {
     // set exiting right away
@@ -29,7 +29,7 @@ function createUI (state) {
 
   if (!state.exiting) {
     // Only show key if not about to exit
-    title = `${keyEl(dat.key)}\n`
+    title = `${keyEl(dwebx.key)}\n`
   }
   if (state.title) title += state.title
 

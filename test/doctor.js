@@ -5,12 +5,12 @@
 //
 
 // TODO
-// dat-doctor requires interactive testing right now...
+// dwebx-doctor requires interactive testing right now...
 
-// var dat = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
+// var dwebx = path.resolve(path.join(__dirname, '..', 'bin', 'cli.js'))
 
 // test('misc - doctor option works ', function (t) {
-//   var st = spawn(t, dat + ' doctor', {end: false})
+//   var st = spawn(t, dwebx + ' doctor', {end: false})
 //   st.stderr.match(function (output) {
 //     var readyPeer = output.indexOf('Waiting for incoming connections') > -1
 //     if (!readyPeer) return false
@@ -27,7 +27,7 @@
 //   }, 'doctor started')
 
 //   function startPhysiciansAssistant (link) {
-//     var assist = spawn(t, dat + ' doctor ' + link, {end: false})
+//     var assist = spawn(t, dwebx + ' doctor ' + link, {end: false})
 //     assist.stderr.match(function (output) {
 //       var readyPeer = output.indexOf('Waiting for incoming connections') > -1
 //       if (!readyPeer) return false

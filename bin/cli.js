@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 var subcommand = require('subcommand')
-var debug = require('debug')('dat')
+var debug = require('debug')('dwebx')
 var usage = require('../src/usage')
 var pkg = require('../package.json')
 
-process.title = 'dat'
+process.title = 'dwebx'
 
 // Check node version to make sure we support
 var NODE_VERSION_SUPPORTED = 4
@@ -29,18 +29,18 @@ else {
 }
 
 if (debug.enabled) {
-  debug('Dat DEBUG mode engaged, enabling quiet mode')
+  debug('DWebX DEBUG mode engaged, enabling quiet mode')
 }
 
 var config = {
   defaults: [
-    { name: 'dir', abbr: 'd', help: 'set the directory for Dat' },
+    { name: 'dir', abbr: 'd', help: 'set the directory for DWebX' },
     { name: 'logspeed', default: 400 },
-    { name: 'port', help: 'port to use for connections (default port: 3282 or first available)' },
+    { name: 'port', help: 'port to use for connections (default port: 1776 or first available)' },
     { name: 'utp', default: true, boolean: true, help: 'use utp for discovery' },
-    { name: 'http', help: 'serve dat over http (default port: 8080)' },
+    { name: 'http', help: 'serve dwebx over http (default port: 8080)' },
     { name: 'debug', default: !!process.env.DEBUG && !debug.enabled, boolean: true },
-    { name: 'quiet', default: debug.enabled, boolean: true }, // use quiet for dat debugging
+    { name: 'quiet', default: debug.enabled, boolean: true }, // use quiet for dwebx debugging
     { name: 'sparse', default: false, boolean: true, help: 'download only requested data' },
     { name: 'up', help: 'throttle upload bandwidth (1024, 1kb, 2mb, etc.)' },
     { name: 'down', help: 'throttle download bandwidth (1024, 1kb, 2mb, etc.)' }
@@ -91,7 +91,7 @@ var config = {
 }
 
 if (debug.enabled) {
-  debug('dat', pkg.version)
+  debug('dwebx', pkg.version)
   debug('node', process.version)
 }
 
@@ -108,9 +108,9 @@ function alias (argv) {
 
 // CLI Shortcuts
 // Commands:
-//   dat <dat://key> [<dir>] - clone/sync a key
-//   dat <dir> - create dat + share a directory
-//   dat <extension>
+//   dwebx <dwebx://key> [<dir>] - clone/sync a key
+//   dwebx <dir> - create dwebx + share a directory
+//   dwebx <extension>
 function syncShorthand (opts) {
   if (!opts._.length) return usage(opts)
   debug('Sync shortcut command')
@@ -123,7 +123,7 @@ function syncShorthand (opts) {
 
   // Download Key
   if (parsed.key) {
-    // dat  <dat://key> [<dir>] - clone/resume <link> in [dir]
+    // dwebx  <dwebx://key> [<dir>] - clone/resume <link> in [dir]
     debug('Clone sync')
     opts.dir = parsed.dir || parsed.key // put in `process.cwd()/key` if no dir
     opts.exit = opts.exit || false
@@ -131,7 +131,7 @@ function syncShorthand (opts) {
   }
 
   // Sync dir
-  // dat <dir> - sync existing dat in {dir}
+  // dwebx <dir> - sync existing dwebx in {dir}
   if (parsed.dir) {
     opts.shortcut = true
     debug('Share sync')
@@ -154,7 +154,7 @@ function showUsageOrRunExtension (opts, help, usageMessage) {
 
 function exitInvalidNode () {
   console.error('Node Version:', process.version)
-  console.error('Unfortunately, we only support Node >= v4. Please upgrade to use Dat.')
+  console.error('Unfortunately, we only support Node >= v4. Please upgrade to use DWebX.')
   console.error('You can find the latest version at https://nodejs.org/')
   process.exit(1)
 }

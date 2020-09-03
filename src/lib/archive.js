@@ -1,4 +1,4 @@
-var debug = require('debug')('dat')
+var debug = require('debug')('dwebx')
 var path = require('path')
 var EventEmitter = require('events').EventEmitter
 var doImport = require('./import-progress')
@@ -9,8 +9,8 @@ var serve = require('./serve-http')
 
 module.exports = function (state, bus) {
   state.warnings = state.warnings || []
-  bus.once('dat', function () {
-    state.writable = state.dat.writable
+  bus.once('dwebx', function () {
+    state.writable = state.dwebx.writable
     state.joinNetwork = !(state.joinNetwork === false)
 
     stats(state, bus)
@@ -21,8 +21,8 @@ module.exports = function (state, bus) {
     else if (state.opts.sparse) selectiveSync(state, bus)
     else download(state, bus)
 
-    if (state.dat.archive.content) return bus.emit('archive:content')
-    state.dat.archive.once('content', function () {
+    if (state.dwebx.archive.content) return bus.emit('archive:content')
+    state.dwebx.archive.once('content', function () {
       bus.emit('archive:content')
     })
   })
@@ -33,7 +33,7 @@ module.exports = function (state, bus) {
 }
 
 function selectiveSync (state, bus) {
-  var archive = state.dat.archive
+  var archive = state.dwebx.archive
   debug('sparse mode. downloading metadata')
   var emitter = new EventEmitter()
 
@@ -73,7 +73,7 @@ function selectiveSync (state, bus) {
 
   if (state.opts.empty) {
     archive.metadata.update(function () {
-      return bus.emit('exit:warn', `Dat successfully created in empty mode. Download files using pull or sync.`)
+      return bus.emit('exit:warn', `DWebX successfully created in empty mode. Download files using pull or sync.`)
     })
   }
 

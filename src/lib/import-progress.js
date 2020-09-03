@@ -3,11 +3,11 @@ var xtend = Object.assign
 module.exports = trackImport
 
 function trackImport (state, bus) {
-  if (state.dat) return track()
-  bus.once('dat', track)
+  if (state.dwebx) return track()
+  bus.once('dwebx', track)
 
   function track () {
-    var progress = state.dat.importFiles(state.opts, function (err) {
+    var progress = state.dwebx.importFiles(state.opts, function (err) {
       if (err) return bus.emit('exit:error', err)
       state.importer.fileImport = null
       state.exiting = true
@@ -19,7 +19,7 @@ function trackImport (state, bus) {
       liveImports: [],
       indexSpeed: progress.indexSpeed
     }, progress)
-    bus.emit('dat:importer')
+    bus.emit('dwebx:importer')
 
     var counting = setInterval(function () {
       // Update file count in progress counting (for big dirs)

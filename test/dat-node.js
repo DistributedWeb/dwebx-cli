@@ -1,11 +1,11 @@
 var test = require('tape')
 var ram = require('random-access-memory')
-var Dat = require('..')
+var DWebX = require('..')
 
-test('dat-node: require dat-node + make a dat', function (t) {
-  Dat(ram, function (err, dat) {
+test('dwebx-node: require dwebx-node + make a dwebx', function (t) {
+  DWebX(ram, function (err, dwebx) {
     t.error(err, 'no error')
-    t.ok(dat, 'makes dat')
+    t.ok(dwebx, 'makes dwebx')
     t.pass('yay')
     t.end()
   })

@@ -1,18 +1,18 @@
 var output = require('neat-log/output')
-var stringKey = require('dat-encoding').toStr
+var stringKey = require('dwebx-encoding').toStr
 var pretty = require('prettier-bytes')
 var chalk = require('chalk')
 
 module.exports = statusUI
 
 function statusUI (state) {
-  if (!state.dat) return 'Starting Dat program...'
+  if (!state.dwebx) return 'Starting DWebX program...'
 
-  var dat = state.dat
-  var stats = dat.stats.get()
+  var dwebx = state.dwebx
+  var stats = dwebx.stats.get()
 
   return output(`
-    ${chalk.blue('dat://' + stringKey(dat.key))}
+    ${chalk.blue('dwebx://' + stringKey(dwebx.key))}
     ${stats.files} files (${pretty(stats.byteLength)})
     Version: ${chalk.bold(stats.version)}
   `)

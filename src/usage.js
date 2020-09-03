@@ -5,39 +5,39 @@ module.exports = function (opts, help, usage) {
     process.exit(1)
   }
   var msg = `
-Usage: dat <cmd> [<dir>] [options]
+Usage: dwebx <cmd> [<dir>] [options]
 
 Sharing Files:
-   dat share                   create dat, import files, share to network
-   dat create                  create empty dat and dat.json
-   dat sync                    import files to existing dat & sync with network
+   dwebx share                   create dwebx, import files, share to network
+   dwebx create                  create empty dwebx and dwebx.json
+   dwebx sync                    import files to existing dwebx & sync with network
 
 Downloading Files:
-   dat clone <link> [<dir>]    download a dat via link to <dir>
-   dat pull                    update dat & exit
-   dat sync                    live sync files with the network
+   dwebx clone <link> [<dir>]    download a dwebx via link to <dir>
+   dwebx pull                    update dwebx & exit
+   dwebx sync                    live sync files with the network
 
 Info:
-   dat log                     log history for a dat
-   dat status                  get key & info about a local dat
+   dwebx log                     log history for a dwebx
+   dwebx status                  get key & info about a local dwebx
 
-Dat public registries:
-   dat <cmd> [<registry>]      All commands take <registry> option
-   dat register                register new account
-   dat login                   login to your account
-   dat publish                 publish a dat
-   dat whoami                  print active login information
-   dat logout                  logout from active login
+DWebX public registries:
+   dwebx <cmd> [<registry>]      All commands take <registry> option
+   dwebx register                register new account
+   dwebx login                   login to your account
+   dwebx publish                 publish a dwebx
+   dwebx whoami                  print active login information
+   dwebx logout                  logout from active login
 
 Stateless/Shortcut Commands:
-   dat <link> [<dir>]          clone or sync link to <dir>
-   dat <dir>                   create and sync dat in directory
+   dwebx <link> [<dir>]          clone or sync link to <dir>
+   dwebx <dir>                   create and sync dwebx in directory
 
 Troubleshooting & Help:
-   dat doctor                  run the dat network doctor
-   dat help                    print this usage guide
-   dat <command> --help, -h    print help for a specific command
-   dat --version, -v           print the dat version
+   dwebx doctor                  run the dwebx network doctor
+   dwebx help                    print this usage guide
+   dwebx <command> --help, -h    print help for a specific command
+   dwebx --version, -v           print the dwebx version
 
   `
   console.error(msg)
@@ -45,6 +45,6 @@ Troubleshooting & Help:
     console.error('General Options:')
     console.error(usage)
   }
-  console.error('Have fun using Dat! Learn more at docs.datproject.org')
+  console.error('Have fun using DWebX! Learn more at docs.dwebx.org')
   process.exit(1)
 }

@@ -2,9 +2,9 @@
 module.exports = {
   name: 'log',
   help: [
-    'View history and information about a dat',
+    'View history and information about a dwebx',
     '',
-    'Usage: dat log [dir|link]'
+    'Usage: dwebx log [dir|link]'
   ].join('\n'),
   options: [
     {
@@ -15,7 +15,7 @@ module.exports = {
     }
   ],
   command: function (opts) {
-    var log = require('dat-log')
+    var log = require('dwebx-log')
     log(opts)
   }
 }

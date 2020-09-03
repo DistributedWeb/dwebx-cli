@@ -2,13 +2,13 @@ module.exports = {
   name: 'keys',
   command: keys,
   help: [
-    'View & manage dat keys',
+    'View & manage dwebx keys',
     '',
     'Usage:',
     '',
-    '  dat keys              view dat key and discovery key',
-    '  dat keys export       export dat secret key',
-    '  dat keys import       import dat secret key to make a dat writable',
+    '  dwebx keys              view dwebx key and discovery key',
+    '  dwebx keys export       export dwebx secret key',
+    '  dwebx keys import       import dwebx secret key to make a dwebx writable',
     ''
   ].join('\n'),
   options: [
@@ -22,32 +22,32 @@ module.exports = {
 }
 
 function keys (opts) {
-  var Dat = require('dat-node')
+  var DWebX = require('dwebx-node')
   var parseArgs = require('../parse-args')
-  var debug = require('debug')('dat')
+  var debug = require('debug')('dwebx')
 
-  debug('dat keys')
+  debug('dwebx keys')
   if (!opts.dir) {
     opts.dir = parseArgs(opts).dir || process.cwd()
   }
   opts.createIfMissing = false // keys must always be a resumed archive
 
-  Dat(opts.dir, opts, function (err, dat) {
-    if (err && err.name === 'MissingError') return exit('Sorry, could not find a dat in this directory.')
+  DWebX(opts.dir, opts, function (err, dwebx) {
+    if (err && err.name === 'MissingError') return exit('Sorry, could not find a dwebx in this directory.')
     if (err) return exit(err)
-    run(dat, opts)
+    run(dwebx, opts)
   })
 }
 
-function run (dat, opts) {
+function run (dwebx, opts) {
   var subcommand = require('subcommand')
   var prompt = require('prompt')
 
   var config = {
     root: {
       command: function () {
-        console.log(`dat://${dat.key.toString('hex')}`)
-        if (opts.discovery) console.log(`Discovery key: ${dat.archive.discoveryKey.toString('hex')}`)
+        console.log(`dwebx://${dwebx.key.toString('hex')}`)
+        if (opts.discovery) console.log(`Discovery key: ${dwebx.archive.discoveryKey.toString('hex')}`)
         process.exit()
       }
     },
@@ -55,14 +55,14 @@ function run (dat, opts) {
       {
         name: 'export',
         command: function foo (args) {
-          if (!dat.writable) return exit('Dat must be writable to export.')
-          console.log(dat.archive.metadata.secretKey.toString('hex'))
+          if (!dwebx.writable) return exit('DWebX must be writable to export.')
+          console.log(dwebx.archive.metadata.secretKey.toString('hex'))
         }
       },
       {
         name: 'import',
         command: function bar (args) {
-          if (dat.writable) return exit('Dat is already writable.')
+          if (dwebx.writable) return exit('DWebX is already writable.')
           importKey()
         }
       }
@@ -78,10 +78,10 @@ function run (dat, opts) {
       properties: {
         key: {
           pattern: /^[a-z0-9]{128}$/,
-          message: 'Use `dat keys export` to get the secret key (128 character hash).',
+          message: 'Use `dwebx keys export` to get the secret key (128 character hash).',
           hidden: true,
           required: true,
-          description: 'dat secret key'
+          description: 'dwebx secret key'
         }
       }
     }
@@ -92,12 +92,12 @@ function run (dat, opts) {
       var secretKey = data.key
       if (typeof secretKey === 'string') secretKey = Buffer.from(secretKey, 'hex')
       // Automatically writes the metadata.ogd file
-      dat.archive.metadata._storage.secretKey.write(0, secretKey, done)
+      dwebx.archive.metadata._storage.secretKey.write(0, secretKey, done)
     })
 
     function done (err) {
       if (err) return exit(err)
-      console.log('Successful import. Dat is now writable.')
+      console.log('Successful import. DWebX is now writable.')
       exit()
     }
   }
