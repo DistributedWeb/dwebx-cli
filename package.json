@@ -1,7 +1,7 @@
 {
   "name": "dwebx-cli",
   "version": "1.0.0",
-  "description": "DWebX is the package manager for data. Easily share and version control data.",
+  "description": "CLI for interacting with the legacy dWeb network.",
   "keywords": [
     "dwebx",
     "dwebx protocol",
@@ -25,12 +25,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/distributedweb/dwebx.git"
+    "url": "https://github.com/distributedweb/dwebx-cli.git"
   },
-  "author": "DWebX Project",
+  "author": "Peeps Labs <peepslabs.gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/distributedweb/dwebx/issues"
+    "url": "https://github.com/distributedweb/dwebx-cli/issues"
   },
   "homepage": "https://dwebx.org",
   "directories": {
