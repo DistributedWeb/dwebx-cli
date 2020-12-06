@@ -46,8 +46,8 @@ function unpublish (opts) {
     // TODO better error msg for non-existing archive
     if (!dwebx.writable) return exitErr('Sorry, you can only publish a dwebx that you created.')
 
-    var datjson = DatJson(dwebx.archive, { file: path.join(dwebx.path, 'dwebx.json') })
-    datjson.read(function (err, data) {
+    var dwebxjson = DatJson(dwebx.archive, { file: path.join(dwebx.path, 'dwebx.json') })
+    dwebxjson.read(function (err, data) {
       if (err) return exitErr(err)
       if (!data.name) return exitErr('Try `dwebx unpublish <name>` with this dwebx, we are having trouble reading it.')
       confirm(data.name)

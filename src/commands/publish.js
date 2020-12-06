@@ -56,11 +56,11 @@ function publish (opts) {
 
     dwebx.joinNetwork() // join network to upload metadata
 
-    var datjson = DatJson(dwebx.archive, { file: path.join(dwebx.path, 'dwebx.json') })
-    datjson.read(publish)
+    var dwebxjson = DatJson(dwebx.archive, { file: path.join(dwebx.path, 'dwebx.json') })
+    dwebxjson.read(publish)
 
     function publish (_, data) {
-      // ignore datjson.read() err, we'll prompt for name
+      // ignore dwebxjson.read() err, we'll prompt for name
 
       // xtend dwebx.json with opts
       var datInfo = xtend({
@@ -115,7 +115,7 @@ function publish (opts) {
         }
         if (body.statusCode === 400) return exitErr(new Error(body.message))
 
-        datjson.write(datInfo, function (err) {
+        dwebxjson.write(datInfo, function (err) {
           if (err) return exitErr(err)
           // TODO: write published url to dwebx.json (need spec)
           var msg = output(`

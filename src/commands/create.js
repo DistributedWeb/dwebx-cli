@@ -79,7 +79,7 @@ function create (opts) {
     if (opts.yes) return done()
 
     console.log(intro)
-    var datjson = DatJson(dwebx.archive, { file: path.join(opts.dir, 'dwebx.json') })
+    var dwebxjson = DatJson(dwebx.archive, { file: path.join(opts.dir, 'dwebx.json') })
     fs.readFile(path.join(opts.dir, 'dwebx.json'), 'utf-8', function (err, data) {
       if (err || !data) return doPrompt()
       data = JSON.parse(data)
@@ -115,7 +115,7 @@ function create (opts) {
       function writeDatJson (err, results) {
         if (err) return exitErr(err) // prompt error
         if (!results.title && !results.description) return done()
-        datjson.create(results, done)
+        dwebxjson.create(results, done)
       }
     }
 
